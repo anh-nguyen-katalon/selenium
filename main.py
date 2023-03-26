@@ -50,5 +50,15 @@ for handle in driver.window_handles:
         driver.switch_to.window(handle)
         main_tab = driver.current_window_handle
 print('After switch:', main_tab)
+
+# manipulate alert popup
+driver.get('https://www.selenium.dev/documentation/webdriver/interactions/alerts/')
+driver.find_element(By.LINK_TEXT, "See a sample confirm").click()
+driver.implicitly_wait(2)
+
+alert = driver.switch_to.alert
+print (alert.text)
+alert.accept()
+
 # end browser session
 driver.quit()
