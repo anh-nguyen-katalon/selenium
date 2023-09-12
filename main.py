@@ -2,63 +2,61 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
 
-# Define options for Chrome session before starting it
+# init chrome driver
 options = ChromeOptions()
-# options.add_argument('headless')
-
-# Initalize Chrome driver
-# A new Chrome browser session is automatically started.
+options.add_argument('headless')
 driver = webdriver.Chrome(options=options)
 
 # set timeout
 driver.implicitly_wait(10)
 
-driver.get('https://testops.staging.katalon.com')
+driver.get('https://www.saucedemo.com')
 
-title = driver.title
-assert title == 'Katalon TestOps'
-
-print (driver.window_handles)
 # fill username 
-username = driver.find_element(by=By.CSS_SELECTOR, value='[name=username]')
-username.send_keys('hai.nguyen+4@katalon.com')
+username = driver.find_element(by=By.CSS_SELECTOR, value='#user-name')
+username.send_keys('standard_user')
 # fill password
-password = driver.find_element(by=By.CSS_SELECTOR, value='[name=password]')
-password.send_keys('-9gBFiixf8H2wXg')
+password = driver.find_element(by=By.CSS_SELECTOR, value='#password')
+password.send_keys('secret_sauce')
 # click submit button
-submit_button = driver.find_element(by=By.CLASS_NAME, value='signin-button')
+submit_button = driver.find_element(by=By.CSS_SELECTOR, value='#login-button')
 submit_button.click()
 
-# find logo link to homepage
-logo_link = driver.find_element(by=By.CLASS_NAME, value='navbar-brand')
-assert logo_link.is_displayed
+assert driver.current_url == 'https://www.saucedemo.com/inventory.html'
 
-driver.get('https://www.selenium.dev/documentation/')
-assert "Automation" in driver.title 
-print (driver.window_handles)
+# add to cart
+add_to_cart_button = driver.find_element(by=By.CSS_SELECTOR, value='#add-to-cart-sauce-labs-backpack')
+add_to_cart_button.click()
+# go to cart
+go_to_cart_button = driver.find_element(by=By.CSS_SELECTOR, value='#shopping_cart_container > a')
+go_to_cart_button.click()
+# checkout
+checkout_button = driver.find_element(by=By.CSS_SELECTOR, value='#checkout')
+checkout_button.click()
 
-edit_page_link = driver.find_element(by=By.LINK_TEXT, value='Edit this page')
-edit_page_link.click()
+# fill first name
+first_name = driver.find_element(by=By.CSS_SELECTOR, value='#first-name')
+first_name.send_keys('Anh')
+# fill last name
+last_name = driver.find_element(by=By.CSS_SELECTOR, value='#last-name')
+last_name.send_keys('Nguyen')
+# fill postal code
+postal_code = driver.find_element(by=By.CSS_SELECTOR, value='#postal-code')
+postal_code.send_keys('123456')
+# click continue button
+continue_button = driver.find_element(by=By.CSS_SELECTOR, value='#continue')
+continue_button.click()
+# click finish button
+finish_button = driver.find_element(by=By.CSS_SELECTOR, value='#finish')
+finish_button.click()
 
-print(driver.window_handles)
-main_tab = driver.current_window_handle
-print ('Before switch:', main_tab)
-
-
-for handle in driver.window_handles:
-    if handle != main_tab:
-        driver.switch_to.window(handle)
-        main_tab = driver.current_window_handle
-print('After switch:', main_tab)
-
-# manipulate alert popup
-driver.get('https://www.selenium.dev/documentation/webdriver/interactions/alerts/')
-driver.find_element(By.LINK_TEXT, "See a sample confirm").click()
-driver.implicitly_wait(2)
-
-alert = driver.switch_to.alert
-print (alert.text)
-alert.accept()
+# click menu button
+menu_button = driver.find_element(by=By.CSS_SELECTOR, value='#react-burger-menu-btn')
+menu_button.click()
+# click logout button
+logout_button = driver.find_element(by=By.CSS_SELECTOR, value='#logout_sidebar_link')
+logout_button.click()
+assert driver.current_url == 'https://www.saucedemo.com/'
 
 # end browser session
 driver.quit()
